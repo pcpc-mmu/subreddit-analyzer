@@ -11,19 +11,19 @@ import requests
 
 
 #SUBREDDITS = ["anime_titties","worldpolitics"]
-SUBREDDITS = [subredditsinsert]
 
 HEADERS = {"User-Agent": "Comments Downloader v0.1"}
 COMMENTS_LIST = list()
 
-MAX_COMMENTS = maxcommentsinsert
+MAX_COMMENTS = 5000
 
 
-def init():
+def commentsinit(SUBREDDITS):
 
     for subreddit in SUBREDDITS:
 
-        writer = csv.writer(open("./{}-comments.csv".format(subreddit),
+        #writer = csv.writer(open("./{}-comments.csv".format(subreddit),
+        writer = csv.writer(open("./csvs/{}-comments.csv".format(subreddit),
                                  "w", newline="", encoding="utf-8"))
 
         # Adding the header.
@@ -78,6 +78,6 @@ def load_comments(subreddit, latest_timestamp=None):
             load_comments(subreddit, latest_timestamp)
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    init()
+#     init()

@@ -6,3 +6,4 @@ seaborn
 spacy
 tldextract
 wordcloud
+nltk

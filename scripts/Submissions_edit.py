@@ -10,20 +10,20 @@ from datetime import datetime
 import requests
 import tldextract
 
-SUBREDDITS = ["anime_titties","worldpolitics"]
+#SUBREDDITS = ["anime_titties","worldpolitics"]
 
 HEADERS = {"User-Agent": "Submissions Downloader v0.2"}
 SUBMISSIONS_LIST = list()
 
-MAX_SUBMISSIONS = 10000
+MAX_SUBMISSIONS = 5000
 
 
-def init():
+def submissioninit(SUBREDDITS):
     """Iterates over all the subreddits and creates their csv files."""
 
     for subreddit in SUBREDDITS:
 
-        writer = csv.writer(open("./{}-submissions.csv".format(subreddit),
+        writer = csv.writer(open("./csvs/{}-submissions.csv".format(subreddit),
                                  "w", newline="", encoding="utf-8"))
 
         # Adding the header.
@@ -31,6 +31,7 @@ def init():
 
         print("Downloading:", subreddit)
         download_submissions(subreddit=subreddit)
+        #writer.writerows(SUBMISSIONS_LIST)
         writer.writerows(SUBMISSIONS_LIST)
 
         SUBMISSIONS_LIST.clear()
@@ -96,10 +97,10 @@ def download_submissions(subreddit, latest_timestamp=None):
         elif len(SUBMISSIONS_LIST) >= MAX_SUBMISSIONS:
             print("Download complete.")
         else:
-            time.sleep(1.2)
+            #time.sleep(1.2)
             download_submissions(subreddit, latest_timestamp)
 
+            
+# if __name__ == "__main__":
 
-if __name__ == "__main__":
-
-    init()
+#     init()
