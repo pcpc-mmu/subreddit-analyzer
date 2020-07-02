@@ -9,6 +9,7 @@ from datetime import datetime
 
 import requests
 import tldextract
+import getopt, sys
 
 #SUBREDDITS = ["anime_titties","worldpolitics"]
 
@@ -16,7 +17,21 @@ HEADERS = {"User-Agent": "Submissions Downloader v0.2"}
 SUBMISSIONS_LIST = list()
 
 MAX_SUBMISSIONS = 5000
+try:
+    MAX_SUBMISSIONS = int(sys.argv[1])
+    print("Max submissions set to {}".format(MAX_SUBMISSIONS))
+except:
+    pass
 
+"""
+opts, args = getopt.getopt(sys.argv,"m:",["ifile+","ofile="])
+print("opts, args = {}***{}".format(opts,args) )
+for opt,arg in args:
+    print("-- looking at opt {}, has value {}".format(opt,arg))
+    if opt in ('-m','-max'):
+        print("maximum set to {}".format(arg))
+        MAX_SUBMISSIONS = arg
+"""
 
 def submissioninit(SUBREDDITS):
     """Iterates over all the subreddits and creates their csv files."""

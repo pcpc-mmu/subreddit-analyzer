@@ -16,6 +16,11 @@ HEADERS = {"User-Agent": "Comments Downloader v0.1"}
 COMMENTS_LIST = list()
 
 MAX_COMMENTS = 5000
+try:
+    MAX_COMMENTS = int(sys.argv[1])
+    print("Max comments set to {}".format(MAX_COMMENTS))
+except:
+    pass
 
 
 def commentsinit(SUBREDDITS):
