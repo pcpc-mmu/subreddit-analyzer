@@ -3,6 +3,7 @@ import re
 import matplotlib.pyplot as plt
 from collections import Counter
 import time
+from textacy import preprocessing
 
 """
 from SetUpper import Settings
@@ -40,17 +41,40 @@ class AnalysisClasses:
     def __init__(self):
         self.accounts = []
 
+
+    def TextCleaner(text):
+        #@TODO chopping of don't/'s/I'm - decontraction
+        
+        text = preprocessing.normalize_hyphenated_words(text) # fix hyphenated words (possibly not a problem here)
+        text = preprocessing.replace.replace_emojis(text,'') # replace/remove emojis
+        text = preprocessing.replace.replace_urls(text,'') # replace urls
+        text = preprocessing.replace.replace_user_handles(text, '') # remove @user handles
+        text = text.replace("\n", " ") # replace newlines with spaces
+        text = re.sub(r'^RT\s+' , '', text) # replace/remove RT text 
+        text = preprocessing.replace.replace_currency_symbols(text, '') # remove currency symbols
+        text = preprocessing.replace.replace_emails(text, '') # replace/remove email strings
+        text = preprocessing.replace.replace_numbers(text, '') # replace/remove numbers
+        text = preprocessing.remove.remove_punctuation(text) # remove punctuation 
+        text = preprocessing.remove.remove_accents(text) # remove accents from text 
+        text = preprocessing.normalize_whitespace(text) # tidy up remaining whitespace
+        text = text.strip() # remove leading and trailing whitespace
+        text = text.lower()
+        return text
+
+
+
+
     def DateFilterADF(dataframe, min_date="", max_date=""):
         our_min_date = epochise_datestring("1970-01-01 00:00:01")
         our_max_date = epochise_datestring("2929-12-31 23:59:59")
         if min_date != "":
-            if(is_instance(min_date,str)):
+            if(isinstance(min_date,str)):
                 our_min_date = epochise_datestring(min_date)
             else:
                 our_min_date = min_date
             print("min date is {}".format(our_min_date) )
         if max_date != "":
-            if(in_instance(max_date,str)):
+            if(isinstance(max_date,str)):
                 our_max_date = epochise_datestring(max_date)
             else:
                 our_max_data = max_date
@@ -64,7 +88,6 @@ class AnalysisClasses:
                 pass
             else:
                 rows_to_kill.append(index)
-        print("killing rows {}".format(rows_to_kill))
         newdf = dataframe.drop(dataframe.index[rows_to_kill])
         return newdf #dataframe
 
@@ -144,15 +167,18 @@ class AnalysisClasses:
             
     def WordCounter(dataframe, column, column_value):
         totalwords = []
+        #ac = AnalysisClass()
         for n in column_value:
             selection = DataframeExtractor(dataframe, column, [n])
             text = ' '.join(selection['body'].astype(str).values.flatten().tolist())
+            text = AnalysisClasses.TextCleaner(text)
             words = text.split()
             totalwords.append(words)
         total = [item for items in totalwords for item in items]
         counts = Counter(total)
         #print(counts)
         return counts
+
         
     
 
