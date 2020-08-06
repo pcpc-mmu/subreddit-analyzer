@@ -64,11 +64,13 @@ def download_submissions(subreddit, latest_timestamp=None):
         The timestampf of the latest comment.
 
     """
+    
+    NUMERO_MYSTERIOSO = 99
 
     base_url = "https://api.pushshift.io/reddit/submission/search/"
 
     params = {"subreddit": subreddit, "sort": "desc",
-              "sort_type": "created_utc", "size": 500}
+              "sort_type": "created_utc", "size": NUMERO_MYSTERIOSO}
 
     # After the first call of this function we will use the 'before' parameter.
     if latest_timestamp != None:
@@ -107,7 +109,7 @@ def download_submissions(subreddit, latest_timestamp=None):
             if len(SUBMISSIONS_LIST) >= MAX_SUBMISSIONS:
                 break
 
-        if total_submissions < 500:
+        if total_submissions < NUMERO_MYSTERIOSO:
             print("No more results.")
         elif len(SUBMISSIONS_LIST) >= MAX_SUBMISSIONS:
             print("Download complete.")

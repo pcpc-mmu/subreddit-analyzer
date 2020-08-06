@@ -164,7 +164,12 @@ class AnalysisClasses:
             return outout
             
             
-            
+    """
+    WordCounter
+    dataframe - a dataframe! of reddit comments with columns X,Y,X
+    column - the column to match column_value's row against
+    column_value - a list of names to match
+    """          
     def WordCounter(dataframe, column, column_value):
         totalwords = []
         #ac = AnalysisClass()
@@ -176,8 +181,12 @@ class AnalysisClasses:
             totalwords.append(words)
         total = [item for items in totalwords for item in items]
         counts = Counter(total)
-        #print(counts)
-        return counts
+        #print("counts", counts)
+        #print("totalwords", totalwords)
+        
+        totalwordscount = len(totalwords[0]) #somehow double brackets in list
+        #print("totalwordcounts",totalwordscount)
+        return (counts,totalwordscount)
 
         
     

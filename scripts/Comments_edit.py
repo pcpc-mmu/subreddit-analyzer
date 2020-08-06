@@ -43,10 +43,12 @@ def commentsinit(SUBREDDITS):
 
 def load_comments(subreddit, latest_timestamp=None):
 
+    comments_per_request = 50
+    
     base_url = "https://api.pushshift.io/reddit/comment/search/"
 
     params = {"subreddit": subreddit, "sort": "desc",
-              "sort_type": "created_utc", "size": 500}
+              "sort_type": "created_utc", "size": comments_per_request}
 
     # After the first call of this function we will use the 'before' parameter.
     if latest_timestamp != None:
@@ -55,6 +57,7 @@ def load_comments(subreddit, latest_timestamp=None):
     with requests.get(base_url, params=params, headers=HEADERS) as response:
 
         json_data = response.json()
+        #print(response.json() )
         total_comments = len(json_data["data"])
         latest_timestamp = 0
 
@@ -74,8 +77,8 @@ def load_comments(subreddit, latest_timestamp=None):
             if len(COMMENTS_LIST) >= MAX_COMMENTS:
                 break
 
-        if total_comments < 500:
-            print("No more results.")
+        if total_comments < comments_per_request:
+            print("No more results - {} down, {} requested.".format(total_comments, comments_per_request))
         elif len(COMMENTS_LIST) >= MAX_COMMENTS:
             print("Download complete.")
         else:
